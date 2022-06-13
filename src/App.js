@@ -38,7 +38,6 @@ const App = ()=>{
             setCurrentTry({...currentTry, letterPosition: currentTry.letterPosition + 1});
         }
     };
-
     // deleting the letter from the end of the matrix
     const onDeleteLetter = ()=>{
         if(gameOver){

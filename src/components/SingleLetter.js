@@ -3,6 +3,11 @@ import { GlobalContext } from '../App';
 
 const SingleLetter = (props)=>{
     const {rowPosition, letterPosition} = props;
+    const letterClassObject = {
+        CORRECT: 'correct',
+        ALMOST: 'included',
+        INCORRECT: 'incorrect'
+    }
     const {board, answerWord, currentTry, setDisabledKeyboardLetters} = useContext(GlobalContext);
     // getting the letter 
     const letter = board[rowPosition][letterPosition]; // connected with the row position of the default board;
@@ -13,11 +18,11 @@ const SingleLetter = (props)=>{
     // assigning the classes
     const classAssign = ()=>{
         if(correctClass){
-            return 'correct';
+            return letterClassObject.CORRECT;
         }else if(almostCorrect){
-            return 'included'
+            return letterClassObject.ALMOST
         }else{
-            return 'incorrect'
+            return letterClassObject.INCORRECT
         }
     }
     //populating the disabled keyboard letters in order to color the keys
