@@ -7,12 +7,13 @@ const Popup = () => {
   return (
     <div className='popup-box'>
         <div className='popup-header'>
-            <div>
-
-            </div>
+            <div></div>
             <button className='close-button' onClick={()=>setDisplayPop(false)}>
                 <FaTimes/>
             </button>
+        </div>
+        <div className='hint-one'>
+            <button className='hint-generate-button'>Generate Meaning Or Clue!</button>
         </div>
     </div>
   )

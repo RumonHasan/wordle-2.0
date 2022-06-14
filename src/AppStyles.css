@@ -192,3 +192,20 @@ body {
   background: transparent;
   color: white;
 }
+
+.hint-one {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hint-generate-button {
+  background: transparent;
+  color: white;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 25px;
+  cursor: pointer;
+}
