@@ -1,14 +1,10 @@
 import React,{useContext, useEffect} from 'react';
 import { GlobalContext } from '../App';
+import { letterClassObject } from '../Utils';
 
 const SingleLetter = (props)=>{
     const {rowPosition, letterPosition} = props;
-    const letterClassObject = {
-        CORRECT: 'correct',
-        ALMOST: 'included',
-        INCORRECT: 'incorrect'
-    }
-    const {board, answerWord, currentTry, setDisabledKeyboardLetters} = useContext(GlobalContext);
+    const {board, answerWord, currentTry, setDisabledKeyboardLetters, setAlmostDisabled, setCorrectClass} = useContext(GlobalContext);
     // getting the letter 
     const letter = board[rowPosition][letterPosition]; // connected with the row position of the default board;
     // assigning classes
@@ -25,10 +21,16 @@ const SingleLetter = (props)=>{
             return letterClassObject.INCORRECT
         }
     }
-    //populating the disabled keyboard letters in order to color the keys
+    //populating the key sets as per the class list
     useEffect(()=>{
         if(letter !== ''){
-            setDisabledKeyboardLetters((prevDisabledLetters)=> [...prevDisabledLetters, letter])
+            if(correctClass){
+                setCorrectClass((prevCorrectClass)=>[...prevCorrectClass, letter])
+            }else if(almostCorrect){
+                setAlmostDisabled((prevAlmostDisabled)=>[...prevAlmostDisabled, letter])
+            }else{
+                setDisabledKeyboardLetters((prevDisabledLetters)=> [...prevDisabledLetters, letter])
+            }   
         }
     },[currentTry.rowPosition]);// controlled by letter position
 

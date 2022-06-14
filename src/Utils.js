@@ -1,4 +1,4 @@
-export const defaultBoard = // default board shape
+export const defaultBoard = // board matrix for the wordle board
 [
     ['', '', '', '', ''],
     ['', '', '', '', ''],
@@ -356,6 +356,12 @@ export const generateRandomWord = ()=>{
     return randomWord;
 }
 
-export const checkLetter = (letter)=>{
+export const checkLetter = (letter)=>{ // isAlpha check
     return (/[a-zA-Z]/).test(letter)
+}
+// class list for correct and incorrect letters
+export const letterClassObject = {
+    CORRECT: 'correct',
+    ALMOST: 'included',
+    INCORRECT: 'incorrect'
 }
