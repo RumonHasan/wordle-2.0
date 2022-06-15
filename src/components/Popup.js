@@ -1,9 +1,24 @@
-import React,{useContext, useState} from 'react';
+import React,{useContext, useEffect} from 'react';
 import { GlobalContext } from '../App';
 import {FaTimes} from 'react-icons/fa';
+import { hintLimitExceeded } from '../Utils';
 
 const Popup = () => {
-   const {setDisplayPop, associationWords, displayHint, setDisplayHint, setHintCounter} = useContext(GlobalContext);
+   const {setDisplayPop, associationWords, displayHint, setDisplayHint, setHintCounter, hintCounter} = useContext(GlobalContext);
+
+   // remove hint after few secs
+   useEffect(()=>{
+        
+   },[displayHint])
+
+   // hint limit
+   const controlHintLimit = ()=>{
+    if(hintCounter >= 2){
+        hintLimitExceeded();
+        setDisplayPop(false);
+    }
+    setHintCounter((prevCounter)=> prevCounter + 1);
+   }
 
   return (
     <div className='popup-box'>
@@ -17,12 +32,12 @@ const Popup = () => {
             </button>
         </div>
         <div className='hint-one'>
-            <button className='hint-generate-button' onClick={()=>{
-            setHintCounter((prevCounter)=> prevCounter + 1)
+            <button className='hint-generate-button' onClick={()=>{ 
+            controlHintLimit();
             setDisplayHint(true)}}>Generate Meaning Or Clue!</button>
         </div>
         <div className='hint-content'>
-            {displayHint && 
+            {displayHint && hintCounter < 3 &&
                 <div className='hints'>
                     <h4>
                         This word is also synonymous or similar to the following words:

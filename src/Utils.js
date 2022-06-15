@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 export const defaultBoard = // board matrix for the wordle board
 [
     ['', '', '', '', ''],
@@ -364,4 +365,20 @@ export const letterClassObject = {
     CORRECT: 'correct',
     ALMOST: 'included',
     INCORRECT: 'incorrect'
+}
+
+// react toastify warnings
+export const warning = {
+    lIMIT_WARNING: 'You can only view the hint two times!',
+    FIRST_WARNING: 'Note: You can only view the hint TWO times!'
+}
+
+// hint limit exceeded
+export const hintLimitExceeded = ()=>{
+    toast(warning.lIMIT_WARNING);
+};
+
+// initial message
+export const hintWarningMessage = ()=>{
+    toast(warning.FIRST_WARNING)
 }

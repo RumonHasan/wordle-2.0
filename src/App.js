@@ -1,11 +1,13 @@
 import React,{createContext, useEffect, useState} from 'react';
-import { defaultBoard, generateRandomWord, checkLetter, wordList } from './Utils';
+import { defaultBoard, generateRandomWord, checkLetter, wordList, hintWarningMessage } from './Utils';
 import { fetchWordClue, associationWordOptions } from './ClueApi';
 import './AppStyles.css';
 import Board from './components/Board'; // primary board component
 import KeyBoard from './components/Keyboard';
 import HintBoard from './components/HintBoard';
 import Popup from './components/Popup';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 export const GlobalContext = createContext(); // main context
 
@@ -18,13 +20,15 @@ const App = ()=>{
     const [displayPop, setDisplayPop] = useState(false);
     const [displayHint, setDisplayHint] = useState(false);
     const [hintCounter, setHintCounter] = useState(0);
+    const [hintView, setHintView] = useState(false);
     const [activeLetterClass, setActiveLetterClass] = useState(false);
-    const [notification, setNotification] = useState({
-        show: false,
-        message: '',
-        type: ''
-    });
-    console.log(hintCounter);
+    const [toastifyMessage, setToastifyMessage] = useState('');
+        // keys used
+    const [correctClass, setCorrectClass] = useState([]);
+    const [disabledKeyboardLetters, setDisabledKeyboardLetters] = useState([]);// to store used keys
+    const [almostDisabled, setAlmostDisabled] = useState([]);
+    // state for controlling the current indexes of rows and columns
+    const [currentTry, setCurrentTry] = useState({rowPosition: 0, letterPosition: 0}); 
 
     // get the associated word clue
     useEffect(()=>{
@@ -42,13 +46,17 @@ const App = ()=>{
         })
     },[]);
 
-    // keys used
-    const [correctClass, setCorrectClass] = useState([]);
-    const [disabledKeyboardLetters, setDisabledKeyboardLetters] = useState([]);// to store used keys
-    const [almostDisabled, setAlmostDisabled] = useState([]);
-
-    // state for controlling the current indexes of rows and columns
-    const [currentTry, setCurrentTry] = useState({rowPosition: 0, letterPosition: 0});    
+    // initial popup 
+    useEffect(()=>{
+        setHintView(true);
+        toast(hintWarningMessage());
+        const timeOut = setTimeout(()=>{
+            setHintView(false);
+        },5000)
+        return (()=>{
+            clearTimeout(timeOut);
+        })
+    },[]);
 
     // function to enter a letter
     const onSelectLetter = (keyVal)=>{
@@ -82,6 +90,7 @@ const App = ()=>{
 
     // handling when all the letter is entered
     console.log(answerWord);
+
     const onEnterLetter = ()=>{
         // only can enter if the letter position is at the end
         if(currentTry.letterPosition !== 5){
@@ -104,6 +113,7 @@ const App = ()=>{
             alert('The Word is not present in the list')
         }
     }
+
     return (
         <GlobalContext.Provider value={{
             answerWord,
@@ -137,6 +147,18 @@ const App = ()=>{
         <div className={displayPop ? 'popup-container active': 'popup-container'}>
             <Popup/>
         </div>
+        <ToastContainer
+            position={hintView ? 'top-center':"top-right"}
+            autoClose={hintView ? 10000: 5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            toastStyle={{backgroundColor:'black', color:'white', border:'2px solid gray', width: hintView && '350px', whiteSpace:'nowrap'}}
+        />
         <div className='game'>
             <div className='menu-bar'>
                 <h4 className='menu-header'>Wordle <span>2.0</span></h4>
