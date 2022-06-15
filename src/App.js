@@ -6,6 +6,8 @@ import Board from './components/Board'; // primary board component
 import KeyBoard from './components/Keyboard';
 import HintBoard from './components/HintBoard';
 import Popup from './components/Popup';
+import Footer from './components/Footer';
+import VictoryPanel from './components/VictoryPanel';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -18,6 +20,7 @@ const App = ()=>{
     const [board, setBoard] = useState(defaultBoard);
     const [gameOver, setGameOver] = useState(false);
     const [displayPop, setDisplayPop] = useState(false);
+    const [displayVictoryPanel, setDisplayVictoryPanel] = useState(false);
     const [displayHint, setDisplayHint] = useState(false);
     const [hintCounter, setHintCounter] = useState(0);
     const [hintView, setHintView] = useState(false);
@@ -70,8 +73,7 @@ const App = ()=>{
             const newBoard = [...board];
             newBoard[currentTry.rowPosition][currentTry.letterPosition] = keyVal.toUpperCase();
             setBoard(newBoard);
-            // incrementing the current attempt in order to increase the length
-            setCurrentTry({...currentTry, letterPosition: currentTry.letterPosition + 1});
+            setCurrentTry({...currentTry, letterPosition: currentTry.letterPosition + 1}); // switching to the next letter
         }
     };
     // deleting the letter from the end of the matrix
@@ -96,7 +98,6 @@ const App = ()=>{
         if(currentTry.letterPosition !== 5){
             return;
         }
-        console.log(board);
         // getting the word from the board
         let guessedWord = '';
         for(let i = 0; i < currentTry.letterPosition; i++){
@@ -104,6 +105,7 @@ const App = ()=>{
         }
         // check parity
         if(guessedWord.toLowerCase() === answerWord.toLowerCase()){
+            setDisplayVictoryPanel(true);
             setGameOver(true);
         }
         // checking whether the word is contained within the dataset or not
@@ -142,10 +144,16 @@ const App = ()=>{
             displayHint,
             setDisplayHint,
             hintCounter,
-            setHintCounter
+            setHintCounter,
+            displayVictoryPanel,
+            setDisplayVictoryPanel,
+    
         }}>
         <div className={displayPop ? 'popup-container active': 'popup-container'}>
             <Popup/>
+        </div>
+        <div className={displayVictoryPanel ? 'victory-panel-container active': 'victory-panel-container'}>
+            <VictoryPanel/>
         </div>
         <ToastContainer
             position={hintView ? 'top-center':"top-right"}
@@ -173,6 +181,7 @@ const App = ()=>{
                         </div>
                     </div>
             </div>
+            <Footer/>
         </GlobalContext.Provider>
     )
 
