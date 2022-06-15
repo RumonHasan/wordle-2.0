@@ -369,8 +369,9 @@ export const letterClassObject = {
 
 // react toastify warnings
 export const warning = {
-    lIMIT_WARNING: 'You can only view the hint two times!',
-    FIRST_WARNING: 'Note: You can only view the hint TWO times!'
+    lIMIT_WARNING: 'You no longer can view the hints!',
+    FIRST_WARNING: 'Note: You can only view the hint 2 times for 4 seconds each!',
+    HINT_VIEW_TIME: 'The hint will dissapear after 4 seconds',
 }
 
 // hint limit exceeded
@@ -381,4 +382,9 @@ export const hintLimitExceeded = ()=>{
 // initial message
 export const hintWarningMessage = ()=>{
     toast(warning.FIRST_WARNING)
+}
+
+// hint time limit
+export const hintTimeLimit = ()=>{
+    toast(warning.HINT_VIEW_TIME);
 }

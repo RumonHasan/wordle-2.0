@@ -157,7 +157,7 @@ const App = ()=>{
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            toastStyle={{backgroundColor:'black', color:'white', border:'2px solid gray', width: hintView && '350px', whiteSpace:'nowrap'}}
+            toastStyle={{backgroundColor:'black', color:'white', border:'2px solid gray', width: hintView && '460px', whiteSpace:'nowrap'}}
         />
         <div className='game'>
             <div className='menu-bar'>
