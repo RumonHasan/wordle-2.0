@@ -1,5 +1,6 @@
 import React,{createContext, useEffect, useState} from 'react';
-import { defaultBoard, generateRandomWord, checkLetter, wordList, hintWarningMessage } from './Utils';
+import { defaultBoard, generateRandomWord, checkLetter, 
+    wordList, hintWarningMessage, wordNotPresentOnTheList } from './Utils';
 import { fetchWordClue, associationWordOptions } from './ClueApi';
 import './AppStyles.css';
 import Board from './components/Board'; // primary board component
@@ -8,6 +9,7 @@ import HintBoard from './components/HintBoard';
 import Popup from './components/Popup';
 import Footer from './components/Footer';
 import VictoryPanel from './components/VictoryPanel';
+import LossPanel from './components/LossPanel';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -15,12 +17,14 @@ export const GlobalContext = createContext(); // main context
 
 const App = ()=>{
     const [answerWord, setAnswerWord] = useState(generateRandomWord());// state for answer;
+    const [definition, setDefinition] = useState('');
     const [associationWords, setAssociationWords] = useState([]);
     const [loader, setLoader] = useState(false);
     const [board, setBoard] = useState(defaultBoard);
     const [gameOver, setGameOver] = useState(false);
     const [displayPop, setDisplayPop] = useState(false);
     const [displayVictoryPanel, setDisplayVictoryPanel] = useState(false);
+    const [displayLossPanel, setDisplayLossPanel] = useState(false);
     const [displayHint, setDisplayHint] = useState(false);
     const [hintCounter, setHintCounter] = useState(0);
     const [hintView, setHintView] = useState(false);
@@ -33,13 +37,13 @@ const App = ()=>{
     // state for controlling the current indexes of rows and columns
     const [currentTry, setCurrentTry] = useState({rowPosition: 0, letterPosition: 0}); 
 
+    // temp function to restart the browser
     const replayGame = ()=>{
         if(gameOver){
             window.location.reload()
             setGameOver(false);
         }
     }
-
     // get the associated word clue
     useEffect(()=>{
         setLoader(true);
@@ -119,7 +123,13 @@ const App = ()=>{
         if(wordList.includes(guessedWord)){
             setCurrentTry({...currentTry, rowPosition: currentTry.rowPosition + 1, letterPosition: 0})// switches to the next row if there is word in the set
         }else{
-            alert('The Word is not present in the list')
+            wordNotPresentOnTheList();
+        }
+
+        // checking if the all the turns are used up
+        if(currentTry.rowPosition === 5){
+            setDisplayLossPanel(true);
+            setGameOver(true);
         }
     }
 
@@ -154,7 +164,9 @@ const App = ()=>{
             setHintCounter,
             displayVictoryPanel,
             setDisplayVictoryPanel,
-            replayGame
+            replayGame,
+            displayLossPanel,
+            setDisplayLossPanel
     
         }}>
         <div className={displayPop ? 'popup-container active': 'popup-container'}>
@@ -162,6 +174,9 @@ const App = ()=>{
         </div>
         <div className={displayVictoryPanel ? 'victory-panel-container active': 'victory-panel-container'}>
             <VictoryPanel/>
+        </div>
+        <div className={displayLossPanel ? 'loss-panel-container active': 'loss-panel-container'}>
+            <LossPanel/>
         </div>
         <ToastContainer
             position={hintView ? 'top-center':"top-right"}

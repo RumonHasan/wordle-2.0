@@ -349,7 +349,7 @@ export const wordList = [
     "HUMPH",
     "SISSY",
     "REBUT",
-    "CIGAR"
+    "CIGAR",
     ]
 
 export const generateRandomWord = ()=>{
@@ -372,6 +372,8 @@ export const warning = {
     lIMIT_WARNING: 'You no longer can view the hints!',
     FIRST_WARNING: 'Note: You can only view the hint 2 times for 4 seconds each!',
     HINT_VIEW_TIME: 'The hint will dissapear after 4 seconds',
+    NOT_PRESENT: "Word not present in the list! Type Again!",
+    NOT_YET: "Activates after two failed tries!"
 }
 
 // hint limit exceeded
@@ -387,4 +389,12 @@ export const hintWarningMessage = ()=>{
 // hint time limit
 export const hintTimeLimit = ()=>{
     toast(warning.HINT_VIEW_TIME);
+}
+
+export const wordNotPresentOnTheList = ()=>{
+    toast(warning.NOT_PRESENT);
+}
+// clue release
+export const noClueAllowed = ()=>{
+    toast(warning.NOT_YET)
 }

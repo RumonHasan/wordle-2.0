@@ -139,6 +139,59 @@ body {
   outline: none !important;
   background-color: rgb(24, 24, 24);
   color: white;
+  opacity: 0.4;
+}
+
+.hint-button.active {
+  opacity: 1;
+  -webkit-animation: fontbulgerHint 2s infinite;
+  -moz-animation: fontbulgerHint 2s infinite;
+  -o-animation: fontbulgerHint 2s infinite;
+  animation: fontbulgerHint 2s infinite;
+}
+/* font bulger*/
+@-webkit-keyframes fontbulgerHint {
+  0%,
+  100% {
+    font-size: 16px;
+  }
+
+  50% {
+    font-size: 20px;
+  }
+}
+
+@-moz-keyframes fontbulgerHint {
+  0%,
+  100% {
+    font-size: 16px;
+  }
+
+  50% {
+    font-size: 20px;
+  }
+}
+
+@-o-keyframes fontbulgerHint {
+  0%,
+  100% {
+    font-size: 16px;
+  }
+
+  50% {
+    font-size: 20px;
+  }
+}
+
+@keyframes fontbulgerHint {
+  0%,
+  100% {
+    font-size: 16px;
+  }
+
+  50% {
+    font-size: 20px;
+  }
 }
 
 .popup-container {
@@ -398,4 +451,78 @@ body {
   border-radius: 8px;
   cursor: pointer;
   margin-left: 10px;
+}
+
+.loss-panel-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  transform: scale(0);
+  visibility: hidden;
+  transition: 450ms ease-in-out;
+}
+
+.loss-panel-container.active {
+  transition: 450ms ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(1);
+  visibility: visible;
+}
+
+.loss-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  height: 400px;
+  width: 400px;
+  background-color: rgb(12, 12, 12);
+  border-radius: 5px;
+  transition: 450ms ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  flex-direction: column;
+}
+
+.loss-header {
+  color: white;
+  white-space: nowrap;
+}
+
+.loss-header span {
+  color: greenyellow;
+}
+
+.retry-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.retry-text {
+  color: aliceblue;
+}
+
+.retry-button {
+  background: black;
+  color: white;
+  font-size: 25px;
+  padding: 7px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  border: 1px solid rgb(75, 75, 75);
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 10px;
 }

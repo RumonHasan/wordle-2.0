@@ -1,8 +1,22 @@
-import React,{useContext, useEffect, useState} from 'react';
+import React,{useContext, useState, useEffect, useRef} from 'react';
 import { GlobalContext } from '../App';
+import Confetti from 'react-confetti';
 
 const VictoryPanel = ()=>{
     const {currentTry, replayGame} = useContext(GlobalContext);
+    const [height, setHeight] = useState(null);
+    const [width, setWidth] = useState(null);
+    const [displayConfetti, setDisplayConfetti] = useState(false);
+    const confettiRef = useRef(null);
+
+    useEffect(() => {
+        setHeight(confettiRef.current.clientHeight);
+        setWidth(confettiRef.current.clientWidth);
+      }, []);
+    
+    const handleDisplayConfetti = ()=>{
+        setDisplayConfetti(true);
+    }
 
     // victory text selections for winning categories
     const victoryText = ()=>{
@@ -18,14 +32,12 @@ const VictoryPanel = ()=>{
                     Congrats you have won it on the <span style={{color:'red', fontSize:30}} className='focus'>2nd</span> try
                 </h3>
             )
-
         }else if(currentTry.rowPosition === 3){
             return (
                 <h3 className='winner-text'>
                     Not bad! You have made it on the third try!!<span style={{color:'red', fontSize:30}} className='focus'>3rd</span> try
                 </h3>
             )
-            
         }else if(currentTry.rowPosition === 4){
             return (
                 <h3 className='winner-text'>
@@ -39,12 +51,12 @@ const VictoryPanel = ()=>{
                     You have barely made it!! <span style={{color:'gray', fontSize:30}} className='focus'>5th</span> try
                 </h3>
             )
-            
         }
     }
 
     return (
-        <div className='victory-panel'>
+        <div className='victory-panel' ref={confettiRef} onMouseEnter={()=> handleDisplayConfetti(true)}
+        onMouseLeave={()=>handleDisplayConfetti(false)}>
                 <div style={{width: '100%'}} className='victory-text'>
                     <div className='letter'>CONGRATULATIONS!!</div>
                 </div>
@@ -59,6 +71,12 @@ const VictoryPanel = ()=>{
                         <button className='replay-button' onClick={replayGame}>Replay</button>
                     </div>
                 </div>
+                <Confetti
+                    recycle={displayConfetti}
+                    numberOfPieces={100}
+                    width={width}
+                    heigh={height}
+                />
         </div>
     )
 };
