@@ -51,6 +51,12 @@ const VictoryPanel = ()=>{
                     You have barely made it!! <span style={{color:'gray', fontSize:30}} className='focus'>5th</span> try
                 </h3>
             )
+        }else{
+            return (
+                <h3 className='winner-text'>
+                    Jeezus you made it! Whew <span style={{color:'gray', fontSize:30}} className='focus'>Last</span> try
+                </h3>
+            )
         }
     }
 

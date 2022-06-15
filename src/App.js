@@ -102,7 +102,6 @@ const App = ()=>{
     }
 
     // handling when all the letter is entered
-    console.log(answerWord);
 
     const onEnterLetter = ()=>{
         // only can enter if the letter position is at the end
@@ -116,6 +115,7 @@ const App = ()=>{
         }
         // check parity
         if(guessedWord.toLowerCase() === answerWord.toLowerCase()){
+            setDisplayLossPanel(false);
             setDisplayVictoryPanel(true);
             setGameOver(true);
         }
@@ -126,10 +126,16 @@ const App = ()=>{
             wordNotPresentOnTheList();
         }
 
-        // checking if the all the turns are used up
-        if(currentTry.rowPosition === 5){
-            setDisplayLossPanel(true);
-            setGameOver(true);
+        // checking if the all the turns are used up and the final world is equal to answer word or not
+        let finalGuessedWord = '';
+        if(currentTry.rowPosition >= 5){
+            for(let finalIndex = 0; finalIndex < currentTry.letterPosition; finalIndex++){
+                finalGuessedWord += board[currentTry.rowPosition][finalIndex];
+            }
+            if(finalGuessedWord !== answerWord){
+                setDisplayLossPanel(true);
+                setGameOver(true);
+            }
         }
     }
 

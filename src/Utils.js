@@ -3116,7 +3116,7 @@ export const wordList = [
 ]
 
 export const generateRandomWord = ()=>{
-    const randomWord = wordList[Math.floor(Math.random() * wordList.length)];
+    const randomWord = wordList[Math.floor(Math.random() * wordList.length / 2)];
     return randomWord;
 }
 
