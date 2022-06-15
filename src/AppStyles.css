@@ -209,3 +209,30 @@ body {
   font-size: 25px;
   cursor: pointer;
 }
+
+.hint-content {
+  color: white;
+  padding: 1rem;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  width: 200px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  margin-top: 10px;
+}
+
+.single-hint-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.single-hint {
+  font-size: 25px;
+  font-weight: bold;
+  color: rgb(121, 226, 121);
+}

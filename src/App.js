@@ -1,5 +1,6 @@
 import React,{createContext, useEffect, useState} from 'react';
 import { defaultBoard, generateRandomWord, checkLetter, wordList } from './Utils';
+import { fetchWordClue, associationWordOptions } from './ClueApi';
 import './AppStyles.css';
 import Board from './components/Board'; // primary board component
 import KeyBoard from './components/Keyboard';
@@ -10,6 +11,7 @@ export const GlobalContext = createContext(); // main context
 
 const App = ()=>{
     const [answerWord, setAnswerWord] = useState(generateRandomWord());// state for answer;
+    const [associationWords, setAssociationWords] = useState([]);
     const [loader, setLoader] = useState(false);
     const [board, setBoard] = useState(defaultBoard);
     const [gameOver, setGameOver] = useState(false);
@@ -19,7 +21,24 @@ const App = ()=>{
         show: false,
         message: '',
         type: ''
-    })
+    });
+
+    // get the associated word clue
+    useEffect(()=>{
+        setLoader(true);
+        const fetchDataAssociation = async ()=>{
+            const associateCollection = await fetchWordClue(`https://twinword-word-graph-dictionary.p.rapidapi.com/association/?entry=${answerWord.toLowerCase()}`, associationWordOptions);
+            const assocWords = associateCollection.assoc_word;
+            for(let i = 0; i < assocWords.length; i++){
+                setAssociationWords((prevAssocWords)=> [...prevAssocWords, assocWords[i]]);
+            }
+        }
+        fetchDataAssociation();
+        return (()=>{
+            setLoader(false);
+        })
+    },[]);
+
     // keys used
     const [correctClass, setCorrectClass] = useState([]);
     const [disabledKeyboardLetters, setDisabledKeyboardLetters] = useState([]);// to store used keys
@@ -104,7 +123,9 @@ const App = ()=>{
             correctClass,
             setCorrectClass,
             displayPop,
-            setDisplayPop
+            setDisplayPop,
+            associationWords,
+            setAssociationWords
         }}>
         <div className={displayPop ? 'popup-container active': 'popup-container'}>
             <Popup/>
