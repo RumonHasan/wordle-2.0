@@ -324,9 +324,6 @@ body {
   width: 100%;
 }
 
-.first-winner {
-}
-
 .focus {
   -webkit-animation: fontbulger 2s infinite;
   -moz-animation: fontbulger 2s infinite;
@@ -377,4 +374,28 @@ body {
   50% {
     font-size: 30px;
   }
+}
+
+.replay-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.replay-content {
+  display: flex;
+  align-items: center;
+}
+
+.replay-button {
+  background: black;
+  color: white;
+  font-size: 25px;
+  padding: 7px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  border: 1px solid rgb(75, 75, 75);
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 10px;
 }

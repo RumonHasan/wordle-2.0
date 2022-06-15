@@ -33,6 +33,13 @@ const App = ()=>{
     // state for controlling the current indexes of rows and columns
     const [currentTry, setCurrentTry] = useState({rowPosition: 0, letterPosition: 0}); 
 
+    const replayGame = ()=>{
+        if(gameOver){
+            window.location.reload()
+            setGameOver(false);
+        }
+    }
+
     // get the associated word clue
     useEffect(()=>{
         setLoader(true);
@@ -147,6 +154,7 @@ const App = ()=>{
             setHintCounter,
             displayVictoryPanel,
             setDisplayVictoryPanel,
+            replayGame
     
         }}>
         <div className={displayPop ? 'popup-container active': 'popup-container'}>
