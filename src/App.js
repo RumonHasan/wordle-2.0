@@ -16,12 +16,15 @@ const App = ()=>{
     const [board, setBoard] = useState(defaultBoard);
     const [gameOver, setGameOver] = useState(false);
     const [displayPop, setDisplayPop] = useState(false);
+    const [displayHint, setDisplayHint] = useState(false);
+    const [hintCounter, setHintCounter] = useState(0);
     const [activeLetterClass, setActiveLetterClass] = useState(false);
     const [notification, setNotification] = useState({
         show: false,
         message: '',
         type: ''
     });
+    console.log(hintCounter);
 
     // get the associated word clue
     useEffect(()=>{
@@ -125,7 +128,11 @@ const App = ()=>{
             displayPop,
             setDisplayPop,
             associationWords,
-            setAssociationWords
+            setAssociationWords,
+            displayHint,
+            setDisplayHint,
+            hintCounter,
+            setHintCounter
         }}>
         <div className={displayPop ? 'popup-container active': 'popup-container'}>
             <Popup/>

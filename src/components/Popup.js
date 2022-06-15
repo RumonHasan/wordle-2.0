@@ -3,18 +3,23 @@ import { GlobalContext } from '../App';
 import {FaTimes} from 'react-icons/fa';
 
 const Popup = () => {
-   const {setDisplayPop, associationWords} = useContext(GlobalContext);
-   const [displayHint, setDisplayHint] = useState(false);
+   const {setDisplayPop, associationWords, displayHint, setDisplayHint, setHintCounter} = useContext(GlobalContext);
+
   return (
     <div className='popup-box'>
         <div className='popup-header'>
             <div></div>
-            <button className='close-button' onClick={()=>setDisplayPop(false)}>
+            <button className='close-button' onClick={()=>{
+                setDisplayPop(false)
+                setDisplayHint(false);
+            }}>
                 <FaTimes/>
             </button>
         </div>
         <div className='hint-one'>
-            <button className='hint-generate-button' onClick={()=>setDisplayHint(true)}>Generate Meaning Or Clue!</button>
+            <button className='hint-generate-button' onClick={()=>{
+            setHintCounter((prevCounter)=> prevCounter + 1)
+            setDisplayHint(true)}}>Generate Meaning Or Clue!</button>
         </div>
         <div className='hint-content'>
             {displayHint && 
@@ -23,7 +28,9 @@ const Popup = () => {
                         This word is also synonymous or similar to the following words:
                     </h4>
                     <div className='single-hint-container'>
-                        {associationWords.map((singleWord, index)=>{
+                        {associationWords.length === 0 ? <h3 className='single-hint'>
+                            Unfortunately No Hints!
+                        </h3>  :associationWords.map((singleWord, index)=>{
                             return (
                                 <h3 key={index} className='single-hint'>
                                     {singleWord.toUpperCase()}
