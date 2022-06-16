@@ -599,3 +599,21 @@ body {
   border-radius: 50%;
   cursor: pointer;
 }
+
+.howtoplay-content {
+  width: 100%;
+  height: 100%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.howtoplay-lines {
+  max-width: 600px;
+}
+.line1 {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
