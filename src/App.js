@@ -1,6 +1,6 @@
 import React,{createContext, useEffect, useState} from 'react';
 import { defaultBoard, generateRandomWord, checkLetter, 
-    wordList, hintWarningMessage, wordNotPresentOnTheList } from './Utils';
+    wordList, hintWarningMessage, wordNotPresentOnTheList, cleanDefinition } from './Utils';
 import { fetchWordClue, associationWordOptions } from './ClueApi';
 import './AppStyles.css';
 import Board from './components/Board'; // primary board component
@@ -12,13 +12,22 @@ import VictoryPanel from './components/VictoryPanel';
 import LossPanel from './components/LossPanel';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
+import { FaBars, FaQuestion } from 'react-icons/fa';
+import HowToPlay from './components/HowToPlay';
 
 export const GlobalContext = createContext(); // main context
+// data category 
+const wordCategory = {
+    ASSOC: 'association',
+    DEFINTION: 'definition'
+}
 
 const App = ()=>{
     const [answerWord, setAnswerWord] = useState(generateRandomWord());// state for answer;
-    const [definition, setDefinition] = useState('');
+    const [definition, setDefinition] = useState(''); // storing the definition
     const [associationWords, setAssociationWords] = useState([]);
+    const [displaySidebar, setDisplaySidebar] = useState(false);
+    const [displayInformation, setDisplayInformation] = useState(false);
     const [loader, setLoader] = useState(false);
     const [board, setBoard] = useState(defaultBoard);
     const [gameOver, setGameOver] = useState(false);
@@ -48,7 +57,7 @@ const App = ()=>{
     useEffect(()=>{
         setLoader(true);
         const fetchDataAssociation = async ()=>{
-            const associateCollection = await fetchWordClue(`https://twinword-word-graph-dictionary.p.rapidapi.com/association/?entry=${answerWord.toLowerCase()}`, associationWordOptions);
+            const associateCollection = await fetchWordClue(`https://twinword-word-graph-dictionary.p.rapidapi.com/${wordCategory.ASSOC}/?entry=${answerWord.toLowerCase()}`, associationWordOptions);
             const assocWords = associateCollection.assoc_word;
             for(let i = 0; i < assocWords.length; i++){
                 setAssociationWords((prevAssocWords)=> [...prevAssocWords, assocWords[i]]);
@@ -59,6 +68,18 @@ const App = ()=>{
             setLoader(false);
         })
     },[]);
+
+    //get the definition of the word
+    useEffect(()=>{
+        const fetchDefinition = async()=>{
+            const associateCollection = await fetchWordClue(`https://twinword-word-graph-dictionary.p.rapidapi.com/${wordCategory.DEFINTION}/?entry=${answerWord.toLowerCase()}`, associationWordOptions);
+            const nounDefinition = associateCollection.meaning.noun;
+            setDefinition(cleanDefinition(nounDefinition));
+        }
+        fetchDefinition();
+    },[]);
+
+    console.log(definition);
 
     // initial popup 
     useEffect(()=>{
@@ -172,9 +193,16 @@ const App = ()=>{
             setDisplayVictoryPanel,
             replayGame,
             displayLossPanel,
-            setDisplayLossPanel
+            setDisplayLossPanel,
+            displaySidebar,
+            setDisplaySidebar,
+            displayInformation,
+            setDisplayInformation
     
         }}>
+        <div className={displayInformation ? 'howtoplay-container active': 'howtoplay-container'}>
+            <HowToPlay/>
+        </div>
         <div className={displayPop ? 'popup-container active': 'popup-container'}>
             <Popup/>
         </div>
@@ -198,6 +226,7 @@ const App = ()=>{
         />
         <div className='game'>
             <div className='menu-bar'>
+                <button className='menu-bar-icon' onClick={()=>setDisplayInformation(true)}><FaQuestion/></button>
                 <h4 className='menu-header'>Wordle <span>2.0</span></h4>
             </div>
                     <div className='game-board'>

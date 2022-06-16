@@ -3130,6 +3130,12 @@ export const letterClassObject = {
     INCORRECT: 'incorrect'
 }
 
+// clean the definition
+export const cleanDefinition = (definition)=>{
+    const defArray = definition.split('\n');
+    return defArray[0].join('');
+}
+
 // react toastify warnings
 export const warning = {
     lIMIT_WARNING: 'You no longer can view the hints!',

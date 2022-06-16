@@ -24,8 +24,8 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 450px;
-  height: 450px;
+  width: 400px;
+  height: 400px;
 }
 
 .letter-block {
@@ -292,7 +292,8 @@ body {
 }
 
 .footer {
-  width: 100%;
+  width: 100vw;
+  position: fixed;
   color: white;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 20px;
@@ -307,7 +308,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
 }
 
 .footer-text {
@@ -525,4 +525,77 @@ body {
   cursor: pointer;
   margin-left: 10px;
   margin-top: 10px;
+}
+
+.menu-bar-icon {
+  color: white;
+  position: absolute;
+  left: 0;
+  margin-left: 20px;
+  font-size: 25px;
+  cursor: pointer;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  outline: none !important;
+}
+
+.howtoplay-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 2;
+  transform: scale(0);
+  visibility: hidden;
+  transition: 450ms ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.howtoplay-container.active {
+  transition: 450ms ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(1);
+  visibility: visible;
+}
+
+.howtoplay-panel {
+  width: 60vw;
+  height: 70vh;
+  border: 0.5px solid gray;
+  position: relative;
+}
+
+.how-header {
+  color: white;
+  text-align: center;
+  font-size: 30px;
+  padding: 10px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.close-how-button {
+  color: white;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 10px;
+  margin-left: 20px;
+  font-size: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
 }
