@@ -3132,8 +3132,13 @@ export const letterClassObject = {
 
 // clean the definition
 export const cleanDefinition = (definition)=>{
+    const noDefText = 'There is no available definition or meaning!'
     const defArray = definition.split('\n');
-    return defArray[0].join('');
+    if(defArray){
+        return defArray[0];
+    }else{
+        return noDefText;
+    }
 }
 
 // react toastify warnings

@@ -24,7 +24,8 @@ const wordCategory = {
 
 const App = ()=>{
     const [answerWord, setAnswerWord] = useState(generateRandomWord());// state for answer;
-    const [definition, setDefinition] = useState(''); // storing the definition
+    const [definition, setDefinition] = useState(''); // storing the definition;
+    const [displayDefinition, setDisplayDefinition] = useState(false); // state for control definition display display
     const [associationWords, setAssociationWords] = useState([]);
     const [displaySidebar, setDisplaySidebar] = useState(false);
     const [displayInformation, setDisplayInformation] = useState(false);
@@ -70,17 +71,11 @@ const App = ()=>{
     },[]);
 
     //get the definition of the word
-    useEffect(()=>{
-        const fetchDefinition = async()=>{
-            const associateCollection = await fetchWordClue(`https://twinword-word-graph-dictionary.p.rapidapi.com/${wordCategory.DEFINTION}/?entry=${answerWord.toLowerCase()}`, associationWordOptions);
-            const nounDefinition = associateCollection.meaning.noun;
-            setDefinition(cleanDefinition(nounDefinition));
-        }
-        fetchDefinition();
-    },[]);
-
-    console.log(definition);
-
+    const fetchDefinition = async()=>{
+        const associateCollection = await fetchWordClue(`https://twinword-word-graph-dictionary.p.rapidapi.com/${wordCategory.DEFINTION}/?entry=${answerWord.toLowerCase()}`, associationWordOptions);
+        const nounDefinition = associateCollection.meaning.noun;
+        setDefinition(cleanDefinition(nounDefinition));
+    }
     // initial popup 
     useEffect(()=>{
         setHintView(true);
@@ -197,7 +192,13 @@ const App = ()=>{
             displaySidebar,
             setDisplaySidebar,
             displayInformation,
-            setDisplayInformation
+            setDisplayInformation,
+            // definition states
+            definition,
+            setDefinition,
+            displayDefinition,
+            setDisplayDefinition,
+            fetchDefinition
     
         }}>
         <div className={displayInformation ? 'howtoplay-container active': 'howtoplay-container'}>

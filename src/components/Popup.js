@@ -1,11 +1,12 @@
-import React,{useContext, useEffect} from 'react';
+import React,{useContext, useEffect, useState} from 'react';
 import { GlobalContext } from '../App';
 import {FaTimes} from 'react-icons/fa';
 import { hintLimitExceeded, hintTimeLimit } from '../Utils';
 
 const Popup = () => {
-   const {setDisplayPop, associationWords, displayHint, setDisplayHint, setHintCounter, hintCounter} = useContext(GlobalContext);
-
+   const {setDisplayPop, definition, associationWords, displayHint, setDisplayHint, setHintCounter, hintCounter, setDisplayDefinition, displayDefinition, fetchDefinition} = useContext(GlobalContext);
+   const [displayClue, setDisplayClue] = useState(false);
+   const [orDisplay, setOrDisplay] = useState(false);
    // remove hint after few secs
    useEffect(()=>{
         const timeOut = setTimeout(()=>{
@@ -23,6 +24,19 @@ const Popup = () => {
     }
     setHintCounter((prevCounter)=> prevCounter + 1);
    }
+
+   // definition control button
+   const definitionControl = ()=>{
+        fetchDefinition();
+        setDisplayDefinition(true);
+        controlORText();
+   };
+
+   // or text
+   const controlORText = ()=>{
+        setOrDisplay(true);
+   }
+
   return (
     <div className='popup-box'>
         <div className='popup-header'>
@@ -34,15 +48,37 @@ const Popup = () => {
                 <FaTimes/>
             </button>
         </div>
-        <div className='hint-one'>
+            
+        {!displayDefinition && <div className='hint-one'>
             <button className='hint-generate-button' onClick={()=>{ 
             controlHintLimit();
             if(hintCounter < 2){
                 hintTimeLimit();
             };
-            setDisplayHint(true)}}>Generate Meaning Or Clue!</button>
-        </div>
+            setDisplayHint(true)
+            setDisplayClue(true);
+            controlORText();
+            }}>Generate Close Words!</button>
+        </div>}
+        {!orDisplay && 
+            <React.Fragment>
+                <br/>
+                <h2 style={{fontWeight:'bold', textAlign:'center', color:'white'}}>OR</h2>
+                <br/>
+            </React.Fragment>
+        }
+        {!displayClue && <div className='hint-one definition'>
+            <button className='hint-generate-button' onClick={definitionControl}>
+                Generate Definition
+            </button>
+        </div>}
         <div className='hint-content'>
+            {displayDefinition
+            &&
+            <div className='single-hint' style={{textAlign:'center'}}>
+                {definition}
+            </div>
+            }
             {displayHint && hintCounter < 3 &&
                 <div className='hints'>
                     <h4>
