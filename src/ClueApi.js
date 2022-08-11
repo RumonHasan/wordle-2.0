@@ -9,6 +9,7 @@ export const associationWordOptions = {
 export const fetchWordClue = async(url, options)=>{
     const res = await fetch(url, options);
     const data = await res.json();
+    console.log(data);
 
     return data;
 }

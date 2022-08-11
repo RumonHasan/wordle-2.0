@@ -4,7 +4,7 @@ import InstructionPanel from "./InstructionPanel";
 import { noClueAllowed } from "../Utils";
 
 const HintBoard = ()=>{
-    const {setDisplayPop, currentTry} = useContext(GlobalContext);
+    const {setDisplayPop, currentTry, fetchDataAssociation} = useContext(GlobalContext);
     const [clueButtonClass, setClueButtonClass] = useState(false);
 
     useEffect(()=>{
@@ -14,6 +14,7 @@ const HintBoard = ()=>{
     },[currentTry.rowPosition]);
 
     const displayPopFeatures = ()=>{
+        fetchDataAssociation();
         if(currentTry.rowPosition > 2){
             setDisplayPop(true);
         }else{

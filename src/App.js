@@ -1,6 +1,5 @@
-import React,{createContext, useEffect, useState} from 'react';
-import { defaultBoard, generateRandomWord, checkLetter, 
-    wordList, hintWarningMessage, wordNotPresentOnTheList, cleanDefinition } from './Utils';
+import React,{cloneElement, createContext, useEffect, useState} from 'react';
+import { defaultBoard, generateRandomWord, checkLetter, hintWarningMessage, wordNotPresentOnTheList, cleanDefinition, wordList } from './Utils';
 import { fetchWordClue, associationWordOptions } from './ClueApi';
 import './AppStyles.css';
 import Board from './components/Board'; // primary board component
@@ -14,6 +13,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 import { FaBars, FaQuestion } from 'react-icons/fa';
 import HowToPlay from './components/HowToPlay';
+// firestore imports
+import {collection, query, onSnapshot, } from 'firebase/firestore';
+import { database } from './firebase';
 
 export const GlobalContext = createContext(); // main context
 // data category 
@@ -23,7 +25,7 @@ const wordCategory = {
 }
 
 const App = ()=>{
-    const [answerWord, setAnswerWord] = useState(generateRandomWord());// state for answer;
+    const [answerWord, setAnswerWord] = useState('');// state for answer;
     const [definition, setDefinition] = useState(''); // storing the definition;
     const [displayDefinition, setDisplayDefinition] = useState(false); // state for control definition display display
     const [associationWords, setAssociationWords] = useState([]);
@@ -47,6 +49,21 @@ const App = ()=>{
     // state for controlling the current indexes of rows and columns
     const [currentTry, setCurrentTry] = useState({rowPosition: 0, letterPosition: 0}); 
 
+    // getting randomWord
+    const getRandomWord = (collection)=>{
+        const randomWord = collection[Math.floor(Math.random() * collection.length / 2)];
+        setAnswerWord(randomWord);
+    }
+    // getting word from firebase
+    useEffect(()=>{
+        const q = query(collection(database, 'words'));
+        onSnapshot(q, (querySnapshot)=>{
+            querySnapshot.docs.map((doc)=>{
+                getRandomWord(doc.data().wordCollection);
+            })
+        })
+    },[])
+
     // temp function to restart the browser
     const replayGame = ()=>{
         if(gameOver){
@@ -54,21 +71,12 @@ const App = ()=>{
             setGameOver(false);
         }
     }
-    // get the associated word clue
-    useEffect(()=>{
-        setLoader(true);
-        const fetchDataAssociation = async ()=>{
-            const associateCollection = await fetchWordClue(`https://twinword-word-graph-dictionary.p.rapidapi.com/${wordCategory.ASSOC}/?entry=${answerWord.toLowerCase()}`, associationWordOptions);
-            const assocWords = associateCollection.assoc_word;
-            for(let i = 0; i < assocWords.length; i++){
-                setAssociationWords((prevAssocWords)=> [...prevAssocWords, assocWords[i]]);
-            }
-        }
-        fetchDataAssociation();
-        return (()=>{
-            setLoader(false);
-        })
-    },[]);
+    // association words
+    const fetchDataAssociation = async ()=>{
+        const associateCollection = await fetchWordClue(`https://twinword-word-graph-dictionary.p.rapidapi.com/${wordCategory.ASSOC}/?entry=${answerWord.toLowerCase()}`, associationWordOptions);
+        const assocWords = associateCollection.assoc_word;
+        setAssociationWords(assocWords);
+    }
 
     //get the definition of the word
     const fetchDefinition = async()=>{
@@ -198,7 +206,9 @@ const App = ()=>{
             setDefinition,
             displayDefinition,
             setDisplayDefinition,
-            fetchDefinition
+            fetchDefinition,
+            // assoc words
+            fetchDataAssociation
     
         }}>
         <div className={displayInformation ? 'howtoplay-container active': 'howtoplay-container'}>

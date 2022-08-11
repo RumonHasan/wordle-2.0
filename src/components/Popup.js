@@ -15,7 +15,8 @@ const Popup = () => {
         return (()=>{
             clearTimeout(timeOut);
         })
-   },[displayHint])
+   },[displayHint]);
+
    // hint limit
    const controlHintLimit = ()=>{
     if(hintCounter >= 2){
@@ -24,14 +25,12 @@ const Popup = () => {
     }
     setHintCounter((prevCounter)=> prevCounter + 1);
    }
-
    // definition control button
    const definitionControl = ()=>{
         fetchDefinition();
         setDisplayDefinition(true);
         controlORText();
    };
-
    // or text
    const controlORText = ()=>{
         setOrDisplay(true);
