@@ -3,7 +3,7 @@ import SingleKey from './SingleKey';
 import { GlobalContext } from '../App';
 
 const KeyBoard = ()=>{
-    const {onSelectLetter, onEnterLetter, onDeleteLetter } = useContext(GlobalContext);
+    const {onSelectLetter, onEnterLetter, onDeleteLetter, unlockKeyboard } = useContext(GlobalContext);
     // key series
     const keySeriesA = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];;
     const keySeriesB = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
@@ -21,10 +21,12 @@ const KeyBoard = ()=>{
     });
     // receive key events
     useEffect(()=>{
-            window.addEventListener('keydown', handleKeyEvents);
-        return (()=>{
-            window.removeEventListener('keydown', handleKeyEvents);
-        })
+        if(unlockKeyboard){
+                window.addEventListener('keydown', handleKeyEvents);
+            return (()=>{
+                window.removeEventListener('keydown', handleKeyEvents);
+            })
+        }
     },[handleKeyEvents]); // dependency list required to change the key event
 
     return (

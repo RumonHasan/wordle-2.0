@@ -9,6 +9,9 @@ import Popup from './components/Popup';
 import Footer from './components/Footer';
 import VictoryPanel from './components/VictoryPanel';
 import LossPanel from './components/LossPanel';
+// leaderboard and choosing players
+import Leaderboard from './components/Leaderboard';
+import ChoosePlayer from './components/ChoosePlayer';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 import { FaBars, FaQuestion } from 'react-icons/fa';
@@ -41,13 +44,20 @@ const App = ()=>{
     const [hintCounter, setHintCounter] = useState(0);
     const [hintView, setHintView] = useState(false);
     const [activeLetterClass, setActiveLetterClass] = useState(false);
-    const [toastifyMessage, setToastifyMessage] = useState('');
+    const [displayChoosePlayerBox, setDisplayChoosePlayerBox] = useState(false);
         // keys used
     const [correctClass, setCorrectClass] = useState([]);
     const [disabledKeyboardLetters, setDisabledKeyboardLetters] = useState([]);// to store used keys
     const [almostDisabled, setAlmostDisabled] = useState([]);
     // state for controlling the current indexes of rows and columns
     const [currentTry, setCurrentTry] = useState({rowPosition: 0, letterPosition: 0}); 
+    // keyboard lock
+    const [unlockKeyboard, setUnlockKeyboard] = useState(false);
+
+    // choosing your player name
+    useEffect(()=>{
+        setDisplayChoosePlayerBox(true);
+    },[]);
 
     // getting randomWord
     const getRandomWord = (collection)=>{
@@ -63,7 +73,6 @@ const App = ()=>{
             })
         })
     },[])
-
     // temp function to restart the browser
     const replayGame = ()=>{
         if(gameOver){
@@ -208,7 +217,13 @@ const App = ()=>{
             setDisplayDefinition,
             fetchDefinition,
             // assoc words
-            fetchDataAssociation
+            fetchDataAssociation,
+            // choosing player
+            displayChoosePlayerBox,
+            setDisplayChoosePlayerBox,
+            // keyboard lock
+            unlockKeyboard,
+            setUnlockKeyboard
     
         }}>
         <div className={displayInformation ? 'howtoplay-container active': 'howtoplay-container'}>
@@ -217,6 +232,11 @@ const App = ()=>{
         <div className={displayPop ? 'popup-container active': 'popup-container'}>
             <Popup/>
         </div>
+
+        <div className={displayChoosePlayerBox ? 'choosePopup-container active': 'choosePopup-container'}>
+            <ChoosePlayer/>
+        </div>
+
         <div className={displayVictoryPanel ? 'victory-panel-container active': 'victory-panel-container'}>
             <VictoryPanel/>
         </div>
