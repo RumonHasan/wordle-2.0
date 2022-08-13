@@ -3140,6 +3140,10 @@ export const cleanDefinition = (definition)=>{
         return noDefText;
     }
 }
+// score matrix
+export const RUBRIC = {
+
+}
 
 // react toastify warnings
 export const warning = {

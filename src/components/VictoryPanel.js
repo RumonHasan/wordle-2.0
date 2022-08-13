@@ -3,7 +3,7 @@ import { GlobalContext } from '../App';
 import Confetti from 'react-confetti';
 
 const VictoryPanel = ()=>{
-    const {currentTry, replayGame} = useContext(GlobalContext);
+    const {currentTry, replayGame, playerName} = useContext(GlobalContext);
     const [height, setHeight] = useState(null);
     const [width, setWidth] = useState(null);
     const [displayConfetti, setDisplayConfetti] = useState(false);
@@ -18,43 +18,98 @@ const VictoryPanel = ()=>{
         setDisplayConfetti(true);
     }
 
+    // score button
+    const scoreButton = (rowPosition)=>{
+        switch(rowPosition){
+            case 1:
+                return <div>
+                    Your Score is 60, <button>
+                        Add to Leaderboard
+                    </button>
+                </div>
+            case 2:
+     
+                return <div>
+                    Your Score is 50, <button>
+                        Add to Leaderboard
+                    </button>
+                </div>
+                case 3:
+         
+                return <div>
+                    Your Score is 40, <button>
+                        Add to Leaderboard
+                    </button>
+                </div>
+            case 4:
+
+                return <div>
+                    Your Score is 30, <button>
+                        Add to Leaderboard
+            </button>
+            </div>
+                case 5:
+                return <div>
+                    Your Score is 20, <button>
+                        Add to Leaderboard
+                    </button>
+                </div>
+            case 6:
+                return <div>
+                    Your Score is 10, <button>
+                        Add to Leaderboard
+                    </button>
+                </div>
+            default:
+                return <div>
+                    Your Score is 0,
+                </div>
+        }
+    }
+
     // victory text selections for winning categories
     const victoryText = ()=>{
         if(currentTry.rowPosition === 1){
             return (
                 <h3 className='winner-text'>
-                    Congrats you have won it on the <span style={{color:'red', fontSize:30}} className='focus'>1st</span> try
+                    Congrats {playerName}, you have won it on the <span style={{color:'red', fontSize:30}} className='focus'>1st</span> try
+                    {scoreButton(currentTry.rowPosition)}
                 </h3>
             )
         }else if(currentTry.rowPosition === 2){
             return (
                 <h3 className='winner-text'>
-                    Congrats you have won it on the <span style={{color:'red', fontSize:30}} className='focus'>2nd</span> try
+                    Congrats {playerName}, you have won it on the <span style={{color:'red', fontSize:30}} className='focus'>2nd</span> try
+                    {scoreButton(currentTry.rowPosition)}
                 </h3>
             )
         }else if(currentTry.rowPosition === 3){
             return (
                 <h3 className='winner-text'>
-                    Not bad! You have made it on the third try!!<span style={{color:'red', fontSize:30}} className='focus'>3rd</span> try
+                    Not bad! {playerName}, You have made it on the third try!!<span style={{color:'red', fontSize:30}} className='focus'>3rd</span> try
+                    {scoreButton(currentTry.rowPosition)}
                 </h3>
             )
         }else if(currentTry.rowPosition === 4){
             return (
                 <h3 className='winner-text'>
-                    Carefull, you only got one more chance to go!<span style={{color:'red', fontSize:30}} className='focus'>4th</span> try
+                    Carefull {playerName}, you only got one more chance to go!<span style={{color:'red', fontSize:30}} className='focus'>4th</span> try
+                    {scoreButton(currentTry.rowPosition)}
                 </h3>
             )
             
         }else if(currentTry.rowPosition === 5){
             return (
                 <h3 className='winner-text'>
-                    You have barely made it!! <span style={{color:'gray', fontSize:30}} className='focus'>5th</span> try
+                    {playerName}, You have barely made it!! <span style={{color:'gray', fontSize:30}} className='focus'>5th</span> try
+                    {scoreButton(currentTry.rowPosition)}
                 </h3>
             )
         }else{
             return (
                 <h3 className='winner-text'>
-                    Jeezus you made it! Whew <span style={{color:'gray', fontSize:30}} className='focus'>Last</span> try
+                   {playerName}, Jeezus you made it! Whew <span style={{color:'gray', fontSize:30}} className='focus'>Last</span> try
+                   {scoreButton(currentTry.rowPosition)}
                 </h3>
             )
         }

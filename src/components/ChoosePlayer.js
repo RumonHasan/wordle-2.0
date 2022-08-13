@@ -1,11 +1,11 @@
-import {useState, useContext} from "react";
+import {useState, useContext, useEffect, useCallback} from "react";
 import { GlobalContext } from "../App";
 // firebase imports
 import {collection, addDoc, Timestamp} from 'firebase/firestore';
 
 const ChoosePlayer = ()=>{
     const [nameInput, setNameInput] = useState('');
-    const {setDisplayChoosePlayerBox, setUnlockKeyboard} = useContext(GlobalContext);
+    const {setDisplayChoosePlayerBox, setUnlockKeyboard, setPlayerName, unlockKeyboard, playerName} = useContext(GlobalContext);
 
     // close player dialog
     const closePlayerDialog = ()=>{
@@ -16,21 +16,25 @@ const ChoosePlayer = ()=>{
         if(!nameInput){
             return;
         }else{
+            setPlayerName(nameInput.toUpperCase());
             closePlayerDialog();
             setNameInput('');
             setUnlockKeyboard(true);
             console.log(nameInput);
         }
     }
-
-    // firebase player submit
-    const handleSubmit = async ()=>{
-        try{
-            
-        }catch(error){
-            console.log(error);
+    // keyboard
+    const handleKeyboardEvents = useCallback((event)=>{
+        if(event.key === 'Enter' && !unlockKeyboard){
+            handlePlayerName();
         }
-    }
+    })
+    useEffect(()=>{
+        window.addEventListener('keydown', handleKeyboardEvents);
+        return (()=>{
+            window.removeEventListener('keydown', handleKeyboardEvents);
+        })
+    }, [handleKeyboardEvents])
 
     // header styles
     const headerStyles = {
@@ -72,6 +76,15 @@ const ChoosePlayer = ()=>{
                     borderRadius:'5px',
                     cursor:'pointer'
                 }}>Submit</button>
+                 <button onClick={()=> setDisplayChoosePlayerBox(false)}
+                style={{border:'1px solid gray',
+                    background:'transparent',
+                    color:'white',
+                    padding: '0.5rem',
+                    borderRadius:'5px',
+                    cursor:'pointer',
+                    marginLeft: '5px'
+                }}>Guest</button>
             </div>
         </div>
     )

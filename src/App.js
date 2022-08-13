@@ -27,9 +27,13 @@ const wordCategory = {
     DEFINTION: 'definition'
 }
 
+export let score = 0;
+
 const App = ()=>{
+   
     const [answerWord, setAnswerWord] = useState('');// state for answer;
     const [definition, setDefinition] = useState(''); // storing the definition;
+    const [playerName, setPlayerName] = useState('');
     const [displayDefinition, setDisplayDefinition] = useState(false); // state for control definition display display
     const [associationWords, setAssociationWords] = useState([]);
     const [displaySidebar, setDisplaySidebar] = useState(false);
@@ -59,6 +63,8 @@ const App = ()=>{
         setDisplayChoosePlayerBox(true);
     },[]);
 
+    console.log(answerWord);
+
     // getting randomWord
     const getRandomWord = (collection)=>{
         const randomWord = collection[Math.floor(Math.random() * collection.length / 2)];
@@ -76,7 +82,7 @@ const App = ()=>{
     // temp function to restart the browser
     const replayGame = ()=>{
         if(gameOver){
-            window.location.reload()
+            window.location.reload('/');
             setGameOver(false);
         }
     }
@@ -176,6 +182,9 @@ const App = ()=>{
         <GlobalContext.Provider value={{
             answerWord,
             setAnswerWord,
+            // player name
+            playerName,
+            setPlayerName,
             loader,
             setLoader,
             onSelectLetter,
@@ -223,7 +232,7 @@ const App = ()=>{
             setDisplayChoosePlayerBox,
             // keyboard lock
             unlockKeyboard,
-            setUnlockKeyboard
+            setUnlockKeyboard,
     
         }}>
         <div className={displayInformation ? 'howtoplay-container active': 'howtoplay-container'}>
@@ -258,7 +267,19 @@ const App = ()=>{
         <div className='game'>
             <div className='menu-bar'>
                 <button className='menu-bar-icon' onClick={()=>setDisplayInformation(true)}><FaQuestion/></button>
-                <h4 className='menu-header'>Wordle <span>2.0</span></h4>
+                <h4 className='menu-header'>{playerName !== '' ? <span>{playerName}'s Game</span> : <span>GUEST</span>}</h4>
+                {playerName === '' &&
+                    <button style={{border:'1px solid gray',
+                    background:'transparent',
+                    color:'white',
+                    padding: '0.5rem',
+                    borderRadius:'5px',
+                    cursor:'pointer',
+                    marginLeft: '30px'
+                }} onClick={()=>setDisplayChoosePlayerBox(true)}>
+                        Set Player Name
+                    </button>
+                }
             </div>
                     <div className='game-board'>
                         <div className='game-section'>
