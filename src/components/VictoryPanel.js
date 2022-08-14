@@ -1,6 +1,7 @@
 import React,{useContext, useState, useEffect, useRef} from 'react';
 import { GlobalContext } from '../App';
 import Confetti from 'react-confetti';
+import LeaderboardButton from './subcomponents/LeaderboardButton';
 
 const VictoryPanel = ()=>{
     const {currentTry, replayGame, playerName} = useContext(GlobalContext);
@@ -18,47 +19,60 @@ const VictoryPanel = ()=>{
         setDisplayConfetti(true);
     }
 
+
     // score button
     const scoreButton = (rowPosition)=>{
         switch(rowPosition){
             case 1:
                 return <div>
-                    Your Score is 60, <button>
-                        Add to Leaderboard
-                    </button>
+                    Your Score is 60, <LeaderboardButton
+                        text={'Add to Leaderboard'}
+                        score={60}
+                        player={playerName}
+                    />
                 </div>
             case 2:
      
                 return <div>
-                    Your Score is 50, <button>
-                        Add to Leaderboard
-                    </button>
+                    Your Score is 50, <LeaderboardButton
+                        text={'Add to Leaderboard'}
+                        score={50}
+                        player={playerName}
+                    />
                 </div>
                 case 3:
          
                 return <div>
-                    Your Score is 40, <button>
-                        Add to Leaderboard
-                    </button>
+                    Your Score is 40, <LeaderboardButton
+                        text={'Add to Leaderboard'}
+                        score={40}
+                        player={playerName}
+                    />
                 </div>
             case 4:
 
                 return <div>
-                    Your Score is 30, <button>
-                        Add to Leaderboard
-            </button>
+                    Your Score is 30, <LeaderboardButton
+                        text={'Add to Leaderboard'}
+                        score={30}
+                        player={playerName}
+                    />
             </div>
                 case 5:
                 return <div>
-                    Your Score is 20, <button>
-                        Add to Leaderboard
-                    </button>
+                    Your Score is 20, <LeaderboardButton
+                        text={'Add to Leaderboard'}
+                        score={20}
+                        player={playerName}
+                    />
                 </div>
             case 6:
                 return <div>
-                    Your Score is 10, <button>
-                        Add to Leaderboard
-                    </button>
+                    Your Score is 10, <LeaderboardButton
+                        text={'Add to Leaderboard'}
+                        score={10}
+                        player={playerName}
+                    />
                 </div>
             default:
                 return <div>

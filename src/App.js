@@ -19,6 +19,7 @@ import HowToPlay from './components/HowToPlay';
 // firestore imports
 import {collection, query, onSnapshot, } from 'firebase/firestore';
 import { database } from './firebase';
+import { Routes, Route, Link } from 'react-router-dom';
 
 export const GlobalContext = createContext(); // main context
 // data category 
@@ -30,7 +31,6 @@ const wordCategory = {
 export let score = 0;
 
 const App = ()=>{
-   
     const [answerWord, setAnswerWord] = useState('');// state for answer;
     const [definition, setDefinition] = useState(''); // storing the definition;
     const [playerName, setPlayerName] = useState('');
@@ -49,6 +49,8 @@ const App = ()=>{
     const [hintView, setHintView] = useState(false);
     const [activeLetterClass, setActiveLetterClass] = useState(false);
     const [displayChoosePlayerBox, setDisplayChoosePlayerBox] = useState(false);
+    // leaderboard states
+    const [displayLeaderboard, setDisplayLeaderboard] = useState(false);
         // keys used
     const [correctClass, setCorrectClass] = useState([]);
     const [disabledKeyboardLetters, setDisabledKeyboardLetters] = useState([]);// to store used keys
@@ -230,6 +232,9 @@ const App = ()=>{
             // choosing player
             displayChoosePlayerBox,
             setDisplayChoosePlayerBox,
+            // leaderboard display,
+            displayLeaderboard,
+            setDisplayLeaderboard,
             // keyboard lock
             unlockKeyboard,
             setUnlockKeyboard,
@@ -251,6 +256,9 @@ const App = ()=>{
         </div>
         <div className={displayLossPanel ? 'loss-panel-container active': 'loss-panel-container'}>
             <LossPanel/>
+        </div>
+        <div className={displayLeaderboard ? 'leaderboard-container active': 'leaderboard-container'}>
+            <Leaderboard/>
         </div>
         <ToastContainer
             position={hintView ? 'top-center':"top-right"}
@@ -280,6 +288,21 @@ const App = ()=>{
                         Set Player Name
                     </button>
                 }
+                    <button style={{
+                        border:'1px solid gray',
+                        background:'transparent',
+                        color:'white',
+                        padding: '0.5rem',
+                        borderRadius:'5px',
+                        cursor:'pointer',
+                        marginLeft: '30px',
+                        right:0,
+                        position:'absolute',
+                        marginRight:10
+                    }}>
+                        Leaderboard
+                    </button>
+                
             </div>
                     <div className='game-board'>
                         <div className='game-section'>

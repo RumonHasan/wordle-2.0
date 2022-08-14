@@ -3151,7 +3151,8 @@ export const warning = {
     FIRST_WARNING: 'Note: You can only view the hint 2 times for 4 seconds each!',
     HINT_VIEW_TIME: 'The hint will dissapear after 4 seconds',
     NOT_PRESENT: "Word not present in the list! Type Again!",
-    NOT_YET: "Activates after two failed tries!"
+    NOT_YET: "Activates after two failed tries!",
+    LEADERBOARD_ADD: 'Data has been added to the leaderboard'
 }
 
 // hint limit exceeded
@@ -3175,4 +3176,9 @@ export const wordNotPresentOnTheList = ()=>{
 // clue release
 export const noClueAllowed = ()=>{
     toast(warning.NOT_YET)
+}
+
+// leaderboard clue
+export const addedToLeaderboard = ()=>{
+    toast(warning.LEADERBOARD_ADD)
 }
