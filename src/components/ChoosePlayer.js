@@ -1,12 +1,11 @@
 import {useState, useContext, useEffect, useCallback} from "react";
 import { GlobalContext } from "../App";
-// firebase imports
-import {collection, addDoc, Timestamp} from 'firebase/firestore';
+import { playerNameNeeded } from "../Utils";
 
 const ChoosePlayer = ()=>{
     const [nameInput, setNameInput] = useState('');
-    const {setDisplayChoosePlayerBox, setUnlockKeyboard, setPlayerName, unlockKeyboard, playerName} = useContext(GlobalContext);
-
+    const {setDisplayChoosePlayerBox, setLoader, setUnlockKeyboard, setPlayerName, unlockKeyboard,
+    setDisplayLeaderboard} = useContext(GlobalContext);
     // close player dialog
     const closePlayerDialog = ()=>{
         setDisplayChoosePlayerBox(false);
@@ -50,10 +49,34 @@ const ChoosePlayer = ()=>{
         justifyContent:'center',
         margin: '1rem'
     }
+    // handleleader board
+    const handleLeaderboard = ()=>{
+        setDisplayLeaderboard(true);
+        setLoader(true);
+    }
+    // guest
+    const guestHandler = ()=>{
+        setDisplayChoosePlayerBox(false);
+        playerNameNeeded();
+    }
+
     return (
         <div className="choosePopup-box">
             <div style={headerStyles}>
                 <h2>Choose Your Player Name!!</h2>
+            </div>
+            <div style={{display:'flex', justifyContent:'center'}}>
+                <button onClick={handleLeaderboard} style={{border:'1px solid gray',
+                        background:'transparent',
+                        color:'white',
+                        padding: '0.5rem',
+                        borderRadius:'5px',
+                        cursor:'pointer',
+                        width:'60%',
+                        marginBottom:'10px'
+                        }}>
+                    Check Out Your Competition!!
+                </button>
             </div>
             <div style={{
                 display:'flex',
@@ -76,7 +99,7 @@ const ChoosePlayer = ()=>{
                     borderRadius:'5px',
                     cursor:'pointer'
                 }}>Submit</button>
-                 <button onClick={()=> setDisplayChoosePlayerBox(false)}
+                 <button onClick={guestHandler}
                 style={{border:'1px solid gray',
                     background:'transparent',
                     color:'white',

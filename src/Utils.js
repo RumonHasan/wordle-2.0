@@ -3152,7 +3152,8 @@ export const warning = {
     HINT_VIEW_TIME: 'The hint will dissapear after 4 seconds',
     NOT_PRESENT: "Word not present in the list! Type Again!",
     NOT_YET: "Activates after two failed tries!",
-    LEADERBOARD_ADD: 'Data has been added to the leaderboard'
+    LEADERBOARD_ADD: 'Data has been added to the leaderboard',
+    SETPLAYER_NAME: 'Need A Player Name To Continue!!'
 }
 
 // hint limit exceeded
@@ -3181,4 +3182,9 @@ export const noClueAllowed = ()=>{
 // leaderboard clue
 export const addedToLeaderboard = ()=>{
     toast(warning.LEADERBOARD_ADD)
+}
+
+// set player name
+export const playerNameNeeded = ()=>{
+    toast(warning.SETPLAYER_NAME)
 }

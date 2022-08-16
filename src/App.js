@@ -31,6 +31,7 @@ const wordCategory = {
 export let score = 0;
 
 const App = ()=>{
+    // main states
     const [answerWord, setAnswerWord] = useState('');// state for answer;
     const [definition, setDefinition] = useState(''); // storing the definition;
     const [playerName, setPlayerName] = useState('');
@@ -51,6 +52,7 @@ const App = ()=>{
     const [displayChoosePlayerBox, setDisplayChoosePlayerBox] = useState(false);
     // leaderboard states
     const [displayLeaderboard, setDisplayLeaderboard] = useState(false);
+    const [leaderboard, setLeaderboard] = useState([]);
         // keys used
     const [correctClass, setCorrectClass] = useState([]);
     const [disabledKeyboardLetters, setDisabledKeyboardLetters] = useState([]);// to store used keys
@@ -60,12 +62,43 @@ const App = ()=>{
     // keyboard lock
     const [unlockKeyboard, setUnlockKeyboard] = useState(false);
 
+    // loader controls
+    useEffect(()=>{
+        const timeOut = setTimeout(()=>{
+            setLoader(false);
+        },2500);
+        return (()=>{
+            clearTimeout(timeOut);
+        })
+    },[loader])
+
     // choosing your player name
     useEffect(()=>{
         setDisplayChoosePlayerBox(true);
     },[]);
 
     console.log(answerWord);
+
+    // fetch leaderboardData 
+    useEffect(()=>{
+        try{
+            const q = query(collection(database, 'leaderboard'));
+            onSnapshot(q, (querySnapshot)=>{
+                querySnapshot.docs.map((doc)=>{
+                    setLeaderboard((prevData)=>[...prevData, doc.data()]);
+                })
+            })
+        }catch(error){
+            console.log(error);
+        }
+    },[])
+
+    // leaderboard controls
+    const handleLeaderboard = (e)=>{
+        e.preventDefault();
+        setDisplayLeaderboard(true);
+        setLoader(true);
+    }
 
     // getting randomWord
     const getRandomWord = (collection)=>{
@@ -235,6 +268,8 @@ const App = ()=>{
             // leaderboard display,
             displayLeaderboard,
             setDisplayLeaderboard,
+            // leaderboard data,
+            leaderboard,
             // keyboard lock
             unlockKeyboard,
             setUnlockKeyboard,
@@ -288,7 +323,7 @@ const App = ()=>{
                         Set Player Name
                     </button>
                 }
-                    <button style={{
+                    <button onClick={handleLeaderboard} style={{
                         border:'1px solid gray',
                         background:'transparent',
                         color:'white',
